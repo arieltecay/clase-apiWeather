@@ -1,10 +1,9 @@
-// import { consultarAPI } from './consultaAPI.js'
-
 import { consultarAPI } from "./consultaAPI.js"
+import { mostrarError } from "./error.js"
 
-const resultado = document.querySelector('#resultado')
+export const container = document.querySelector('.container')
+
 const formulario = document.querySelector('#formulario')
-const container = document.querySelector('.container')
 
 window.addEventListener('load', () => {
     formulario.addEventListener('submit', buscarClima)
@@ -12,19 +11,27 @@ window.addEventListener('load', () => {
 
 function buscarClima(e) {
     e.preventDefault()
-    console.log('Buscando Clima');
+    console.log('Buscando el clima');
+
+    //Validacion 
     const ciudad = document.querySelector('#ciudad').value
     const pais = document.querySelector('#pais').value
 
-    const data = consultarAPI(ciudad, pais)
-    console.log(data);
+    if (ciudad === '' || pais === '') {
+        // console.error('No puede pasar datos vacios');
+        // Dejar el desafío para que hagan que desaparezca despues de 5 segundos el alerta
+        const alerta = container.appendChild(mostrarError('Error al mostrar el clima, verificar campos'))
+        setTimeout(() => {
+            alerta.remove()
+        }, 5000)
+    }
+    /*     console.log(ciudad);
+        console.log(pais); */
+
+
+    // Consultar API
+    consultarAPI(ciudad, pais)
+
+
 }
-/* 
-Validacion para que no envien input vacios 
-Mostrar valores en el DOM 
-temp: 283.15
-temp_max: 283.15
-temp_min: 283.15
-Para mostrar en Grados Celcius restar 273.15
-Mostrar un cartel de error que dure aprox 5 segundos
-*/
+
